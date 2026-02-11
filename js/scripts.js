@@ -32,10 +32,12 @@ function initializeAll() {
   initImplementationPageFeatures();
   initPricingPageFeatures();
 
+  // LCI Page features
+  initLCIPageFeatures();
+
   // External libraries initialization
   initSwiper();
   initParticlesJS();
-  initGSAPAnimations();
 
   console.log("Lokta JS initialized successfully");
 }
@@ -377,8 +379,13 @@ function checkPageSpecificFeatures() {
   }
 
   // Check for FAQ accordions
-  if (document.querySelector(".accordion-item")) {
+  if (document.querySelector(".faq-item")) {
     initFAQAccordion();
+  }
+
+  // Check for LCI page
+  if (document.querySelector(".process-timeline")) {
+    console.log("LCI timeline detected");
   }
 }
 
@@ -504,28 +511,178 @@ function initCategoryTabs() {
 
 // FAQ ACCORDION
 function initFAQAccordion() {
-  const faqQuestions = document.querySelectorAll(".faq-question");
-  if (faqQuestions.length === 0) return;
+  const faqItems = document.querySelectorAll(".faq-item");
+  if (faqItems.length === 0) return;
 
-  faqQuestions.forEach((question) => {
+  faqItems.forEach((item) => {
+    const question = item.querySelector(".faq-question");
+    if (!question) return;
+
     question.addEventListener("click", function () {
-      const faqItem = this.parentElement;
-      const isActive = faqItem.classList.contains("active");
+      const isActive = item.classList.contains("active");
 
       // Close all other FAQ items
-      document.querySelectorAll(".faq-item").forEach((item) => {
-        if (item !== faqItem) {
-          item.classList.remove("active");
+      document.querySelectorAll(".faq-item").forEach((otherItem) => {
+        if (otherItem !== item) {
+          otherItem.classList.remove("active");
         }
       });
 
       // Toggle current item
       if (!isActive) {
-        faqItem.classList.add("active");
+        item.classList.add("active");
       } else {
-        faqItem.classList.remove("active");
+        item.classList.remove("active");
       }
     });
+  });
+}
+
+// ============================================
+// LCI PAGE FEATURES
+// ============================================
+
+function initLCIPageFeatures() {
+  // Check if we're on LCI page
+  if (!document.querySelector(".process-timeline")) return;
+
+  console.log("Initializing LCI page features");
+
+  // Fix LCI timeline for mobile
+  fixLCITimelineMobile();
+
+  // Add scroll animation for process steps
+  animateProcessSteps();
+}
+
+function fixLCITimelineMobile() {
+  const processSteps = document.querySelectorAll(".process-step");
+  const timeline = document.querySelector(".process-timeline");
+
+  if (!processSteps.length || !timeline) return;
+
+  // Check if we're on mobile
+  const isMobile = window.innerWidth <= 768;
+
+  if (isMobile) {
+    // For mobile, adjust step numbers positioning
+    processSteps.forEach((step, index) => {
+      const stepNumber = step.querySelector(".step-number");
+      if (stepNumber) {
+        // Remove any existing inline styles
+        stepNumber.style.position = "relative";
+        stepNumber.style.top = "0";
+        stepNumber.style.left = "0";
+        stepNumber.style.right = "auto";
+        stepNumber.style.transform = "none";
+        stepNumber.style.marginBottom = "20px";
+        stepNumber.style.marginRight = "0";
+        stepNumber.style.float = "none";
+        stepNumber.style.display = "inline-block";
+
+        // Ensure step number is visible
+        stepNumber.style.opacity = "1";
+        stepNumber.style.visibility = "visible";
+      }
+
+      // Ensure process content has proper margin
+      const processContent = step.querySelector(".process-content");
+      if (processContent) {
+        processContent.style.marginLeft = "0";
+        processContent.style.marginRight = "0";
+        processContent.style.textAlign = "center";
+      }
+    });
+
+    // Hide the timeline line on mobile
+    const timelineLine = timeline.querySelector("::before");
+    if (timelineLine) {
+      timeline.style.position = "relative";
+    }
+  }
+
+  // Update on window resize
+  window.addEventListener("resize", function () {
+    const isMobileNow = window.innerWidth <= 768;
+
+    processSteps.forEach((step, index) => {
+      const stepNumber = step.querySelector(".step-number");
+      const processContent = step.querySelector(".process-content");
+
+      if (isMobileNow) {
+        // Mobile styles
+        if (stepNumber) {
+          stepNumber.style.position = "relative";
+          stepNumber.style.top = "0";
+          stepNumber.style.left = "0";
+          stepNumber.style.right = "auto";
+          stepNumber.style.transform = "none";
+          stepNumber.style.marginBottom = "20px";
+          stepNumber.style.marginRight = "0";
+          stepNumber.style.float = "none";
+          stepNumber.style.display = "inline-block";
+          stepNumber.style.opacity = "1";
+          stepNumber.style.visibility = "visible";
+        }
+
+        if (processContent) {
+          processContent.style.marginLeft = "0";
+          processContent.style.marginRight = "0";
+          processContent.style.textAlign = "center";
+        }
+      } else {
+        // Desktop styles - reset to CSS defaults
+        if (stepNumber) {
+          stepNumber.style.position = "";
+          stepNumber.style.top = "";
+          stepNumber.style.left = "";
+          stepNumber.style.right = "";
+          stepNumber.style.transform = "";
+          stepNumber.style.marginBottom = "";
+          stepNumber.style.marginRight = "";
+          stepNumber.style.float = "";
+          stepNumber.style.display = "";
+        }
+
+        if (processContent) {
+          processContent.style.marginLeft = "";
+          processContent.style.marginRight = "";
+          processContent.style.textAlign = "";
+        }
+      }
+    });
+  });
+}
+
+function animateProcessSteps() {
+  const processSteps = document.querySelectorAll(".process-step");
+
+  if (processSteps.length === 0) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+
+          // Add a subtle animation for the step number
+          const stepNumber = entry.target.querySelector(".step-number");
+          if (stepNumber) {
+            stepNumber.style.transform = "scale(1.1)";
+            stepNumber.style.transition = "transform 0.3s ease";
+
+            setTimeout(() => {
+              stepNumber.style.transform = "scale(1)";
+            }, 300);
+          }
+        }
+      });
+    },
+    { threshold: 0.1 },
+  );
+
+  processSteps.forEach((step) => {
+    observer.observe(step);
   });
 }
 
@@ -725,59 +882,6 @@ function initParticlesJS() {
   }
 }
 
-function initGSAPAnimations() {
-  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-    gsap.from(".hero-title", {
-      duration: 1,
-      y: 50,
-      opacity: 0,
-      ease: "power3.out",
-    });
-
-    gsap.from(".hero-description", {
-      duration: 1,
-      y: 50,
-      opacity: 0,
-      ease: "power3.out",
-      delay: 0.2,
-    });
-
-    gsap.from(".hero-cta", {
-      duration: 1,
-      y: 50,
-      opacity: 0,
-      ease: "power3.out",
-      delay: 0.4,
-    });
-
-    gsap.utils.toArray(".feature-card").forEach((card, i) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        delay: i * 0.1,
-        ease: "power3.out",
-      });
-    });
-
-    const highlights = document.querySelectorAll(".highlight-item");
-    highlights.forEach((highlight, index) => {
-      gsap.to(highlight, {
-        y: 10,
-        duration: 2 + index * 0.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    });
-  }
-}
-
 // ============================================
 // EXPORT FOR MODULE USAGE (IF NEEDED)
 // ============================================
@@ -792,5 +896,6 @@ if (typeof module !== "undefined" && module.exports) {
     initAboutPageFeatures,
     initImplementationPageFeatures,
     initPricingPageFeatures,
+    initLCIPageFeatures,
   };
 }
