@@ -800,6 +800,7 @@ button {
     position: absolute;
     top: -12px;
     left: 50%;
+    white-space: nowrap;
     transform: translateX(-50%);
     background: var(--primary-color);
     color: var(--white-color);
@@ -2096,7 +2097,7 @@ button {
 
 .trust-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--space-lg);
     text-align: center;
 }
@@ -2556,6 +2557,7 @@ input:checked+.slider:before {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     gap: var(--space-sm);
     background: rgba(255, 255, 255, 0.1);
     padding: var(--space-sm);
@@ -2568,6 +2570,7 @@ input:checked+.slider:before {
 .period-option {
     flex: 1;
     text-align: center;
+    white-space: nowrap;
     background: var(--lighter-gray);
     padding: var(--space-sm) var(--space-md);
     border-radius: var(--border-radius-md);
@@ -2605,7 +2608,7 @@ input:checked+.slider:before {
 
 .plans-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: var(--space-lg);
     margin-bottom: var(--space-xxl);
 }
@@ -2773,10 +2776,6 @@ input:checked+.slider:before {
     margin-top: var(--space-lg);
     font-size: var(--font-size-sm);
     color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-xs);
 }
 
 .enterprise-note i {
@@ -3434,7 +3433,8 @@ input:checked+.slider:before {
     line-height: 1.7;
 }
 
-.features-cta-buttons {
+.features-cta-buttons,
+.enterprise-cta {
     display: flex;
     gap: var(--space-md);
     justify-content: center;
@@ -3882,18 +3882,15 @@ img[loading="lazy"].loaded {
     }
 
     .hero-cta,
-    .about-cta {
-        justify-content: center;
+    .about-cta,
+    .hero-section .hero-badges,
+    .hero-section .hero-cta {
+        justify-content: center !important;
     }
 
     .feature-item {
-        justify-content: center;
+        /* justify-content: center; */
         text-align: left;
-    }
-
-    .trust-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-md);
     }
 
     .pricing-grid {
@@ -3962,13 +3959,6 @@ img[loading="lazy"].loaded {
     .timeline-item:nth-child(odd) .timeline-dot,
     .timeline-item:nth-child(even) .timeline-dot {
         left: -60px;
-    }
-
-    .plans-container {
-        grid-template-columns: 1fr;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
     }
 
     .plan-card.popular {
@@ -4042,10 +4032,6 @@ img[loading="lazy"].loaded {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
 
-    .trust-grid {
-        grid-template-columns: 1fr;
-    }
-
     .testimonial-card {
         padding: var(--space-lg);
     }
@@ -4116,10 +4102,6 @@ img[loading="lazy"].loaded {
         font-size: 18px;
     }
 
-    .video-modal .modal-content {
-        padding: var(--space-md);
-    }
-
     /* Page Hero Mobile */
     .features-hero,
     .implementation-hero,
@@ -4144,14 +4126,16 @@ img[loading="lazy"].loaded {
     /* CTA Buttons Mobile */
     .features-cta-buttons,
     .about-cta-buttons,
-    .implementation-cta-buttons {
+    .implementation-cta-buttons,
+    .enterprise-cta {
         flex-direction: column;
         align-items: stretch;
     }
 
     .features-cta-buttons .btn,
     .about-cta-buttons .btn,
-    .implementation-cta-buttons .btn {
+    .implementation-cta-buttons .btn,
+    .enterprise-cta .btn {
         width: 100%;
         justify-content: center;
     }
@@ -4189,16 +4173,6 @@ img[loading="lazy"].loaded {
 
     .timeline-content {
         padding: var(--space-lg);
-    }
-
-    /* Pricing Page Mobile */
-    .pricing-period-toggle {
-        flex-direction: column;
-        gap: var(--space-sm);
-    }
-
-    .period-option {
-        width: 100%;
     }
 
     .enterprise-features {
@@ -4358,10 +4332,6 @@ img[loading="lazy"].loaded {
     }
 
     .plan-price .amount {
-        font-size: 2.5rem;
-    }
-
-    .roi-value {
         font-size: 2.5rem;
     }
 
