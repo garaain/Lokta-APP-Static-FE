@@ -570,15 +570,15 @@ function fixLCITimelineMobile() {
       const stepNumber = step.querySelector(".step-number");
       if (stepNumber) {
         // Remove any existing inline styles
-        stepNumber.style.position = "relative";
-        stepNumber.style.top = "0";
-        stepNumber.style.left = "0";
-        stepNumber.style.right = "auto";
-        stepNumber.style.transform = "none";
-        stepNumber.style.marginBottom = "20px";
-        stepNumber.style.marginRight = "0";
-        stepNumber.style.float = "none";
-        stepNumber.style.display = "inline-block";
+        // stepNumber.style.position = "relative";
+        // stepNumber.style.top = "0";
+        // stepNumber.style.left = "0";
+        // stepNumber.style.right = "auto";
+        // stepNumber.style.transform = "none";
+        // stepNumber.style.marginBottom = "20px";
+        // stepNumber.style.marginRight = "0";
+        // stepNumber.style.float = "none";
+        // stepNumber.style.display = "inline-block";
 
         // Ensure step number is visible
         stepNumber.style.opacity = "1";
@@ -612,17 +612,17 @@ function fixLCITimelineMobile() {
       if (isMobileNow) {
         // Mobile styles
         if (stepNumber) {
-          stepNumber.style.position = "relative";
-          stepNumber.style.top = "0";
-          stepNumber.style.left = "0";
-          stepNumber.style.right = "auto";
-          stepNumber.style.transform = "none";
-          stepNumber.style.marginBottom = "20px";
-          stepNumber.style.marginRight = "0";
-          stepNumber.style.float = "none";
-          stepNumber.style.display = "inline-block";
-          stepNumber.style.opacity = "1";
-          stepNumber.style.visibility = "visible";
+          // stepNumber.style.position = "relative";
+          // stepNumber.style.top = "0";
+          // stepNumber.style.left = "0";
+          // stepNumber.style.right = "auto";
+          // stepNumber.style.transform = "none";
+          // stepNumber.style.marginBottom = "20px";
+          // stepNumber.style.marginRight = "0";
+          // stepNumber.style.float = "none";
+          // stepNumber.style.display = "inline-block";
+          // stepNumber.style.opacity = "1";
+          // stepNumber.style.visibility = "visible";
         }
 
         if (processContent) {
